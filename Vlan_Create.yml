@@ -1,20 +1,13 @@
-- name: Configure VLAN on AsterNOS switches
-  hosts: astonos_switches
+- name: Configure VLAN on AsterNOS
+  hosts: asternos_switches
   gather_facts: no
   connection: network_cli
   vars:
     vlan_id: 1000
     vlan_name: Finance
   tasks:
-
-    - name: Enter configuration mode
-      ansible.builtin.raw: configure terminal
-
-    - name: Create VLAN
-      ansible.builtin.raw: vlan {{ vlan_id }}
-
-    - name: Set VLAN name
-      ansible.builtin.raw: name {{ vlan_name }}
-
-    - name: Exit configuration mode
-      ansible.builtin.raw: end
+    - name: Configure VLAN
+      ansible.netcommon.cli_config:
+        lines:
+          - vlan {{ vlan_id }}
+          - description {{ vlan_name }}
